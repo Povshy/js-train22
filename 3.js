@@ -11,6 +11,12 @@ class Customer {
   /**
    * Метод відправки повідомлення клієнту по електронній пошті.Приймає message - повідомлення,та виводить в консоль ${this.email} ${message}.
    */
+  constructor(email) {
+    this.email = email;
+  }
+  sendEmail(mess) {
+    console.log(`Відправка на ${this.email} лист ${mess}`);
+  }
 }
 
 /**
@@ -20,6 +26,9 @@ class Product {
   /**
    * Конструктор для класу Product.Приймає name - Назва продукту.
    */
+  constructor(name) {
+    this.name = name;
+  }
 }
 
 /**
@@ -27,6 +36,27 @@ class Product {
  * Магазин має назву і список підписників, які отримують повідомлення про нові продукти.
  */
 class Store {
+  constructor(name) {
+    this.name = name;
+    this.customers = [];
+  }
+  subscribe(customer) {
+    this.customers.push(customer);
+  }
+  unsubscribe(customer) {
+    this.customers = this.customers.filter((sub) => sub !== customer);
+  }
+  createProduct(name) {
+    const product = new Product(name);
+    this.sendNotify(product);
+  }
+  sendNotify(product) {
+    this.customers.forEach((customer) => {
+      customer.sendEmail(
+        `Новий продукт "${product.name}" в магазині ${this.name}!`
+      );
+    });
+  }
   /**
    * Конструктор для класу Store.Приймає name - Назва магазину, та створює пустий масив customers
    */
@@ -53,18 +83,18 @@ class Store {
 console.log("Завдання 3 ====================================");
 // Після виконання розкоментуйте код нижче
 
-// const store = new Store("IT Supermarket");
+const store = new Store("IT Supermarket");
 
-// const customer1 = new Customer("john@example.com");
-// const customer2 = new Customer("jane@example.com");
-// const customer3 = new Customer("alice@example.com");
+const customer1 = new Customer("john@example.com");
+const customer2 = new Customer("jane@example.com");
+const customer3 = new Customer("alice@example.com");
 
-// store.subscribe(customer1);
-// store.subscribe(customer2);
-// store.subscribe(customer3);
+store.subscribe(customer1);
+store.subscribe(customer2);
+store.subscribe(customer3);
 
-// store.createProduct("Новий ноутбук");
+store.createProduct("Новий ноутбук");
 
-// store.unsubscribe(customer1);
+store.unsubscribe(customer1);
 
-// store.createProduct("Бездротові навушники");
+store.createProduct("Бездротові навушники");
